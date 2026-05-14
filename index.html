@@ -447,7 +447,7 @@
  type(`${displayName(crushName, DEFAULT_CRUSH)} riposte! `,()=>{
  shake();dmgSimon(99);
  if(simonHp<=0){setStellaState('normal');type(`${displayName(playerName, DEFAULT_PLAYER)} est K.O.…`,()=>setTimeout(showGameover,600));return;}
- const m=[`${displayName(crushName, DEFAULT_CRUSH)} utilise REGARD NOIR!\n-99 HP`,'N'essaye\'pas ça.\n-99 HP','SERIEUSEMENT?\n-99 HP'];
+ const m=[`${displayName(crushName, DEFAULT_CRUSH)} utilise REGARD NOIR!\n-99 HP`,"N'essaye pas ça.\n-99 HP",'SERIEUSEMENT?\n-99 HP'];
  type(m[Math.min(fightCount-1,m.length-1)],()=>{setStellaState('normal');showMenu();});
  });
  });
