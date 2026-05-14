@@ -350,7 +350,7 @@
 
  function runIntro(){
  setStellaState('nervous'); phase='intro';
- type(`Un ${displayName(crushName, DEFAULT_CRUSH)} sauvage appearait!\n${displayName(crushName, DEFAULT_CRUSH)} semble préparée…`,()=>{setStellaState('normal');showMenu();});
+ type(`Un ${displayName(crushName, DEFAULT_CRUSH)} sauvage apparait!\n${displayName(crushName, DEFAULT_CRUSH)} semble préparée…`,()=>{setStellaState('normal');showMenu();});
  }
 
 
@@ -559,9 +559,14 @@
 
  function handleQuitHover(e){
  const b = e.currentTarget;
- const x = (Math.random() - 0.5) * 200;
- const y = (Math.random() - 0.5) * 120;
- b.style.transition = 'transform 0.12s ease';
+ const rect = b.getBoundingClientRect();
+ const dx = e.clientX - (rect.left + rect.width / 2);
+ const dy = e.clientY - (rect.top + rect.height / 2);
+ const dist = 180 + Math.random() * 80;
+ const norm = Math.sqrt(dx*dx + dy*dy) || 1;
+ const x = -(dx / norm) * dist + (Math.random() - 0.5) * 60;
+ const y = -(dy / norm) * dist + (Math.random() - 0.5) * 40;
+ b.style.transition = 'none';
  b.style.transform = `translate(${x}px, ${y}px)`;
  }
 
