@@ -73,10 +73,10 @@
  </div>
  <div class="menu-panel show" id="menuPanel">
  <div class="menu-grid">
- <button class="menu-btn cursor-on" id="btnReserver" onclick="cmd('réserver')">RESERVER</button>
+ <button class="menu-btn cursor-on" id="btnReserver" onclick="cmd('askout')">RESERVER</button>
  <button class="menu-btn" id="btnFight" onclick="cmd('fight')">ATTAQUER</button>
- <button class="menu-btn" id="btnReflechir" onclick="cmd('Réflechir')">REFLECHIR</button>
- <button class="menu-btn" id="btnFuir" onclick="cmd('fuir')">FUIR</button>
+ <button class="menu-btn" id="btnReflechir" onclick="cmd('overthink')">REFLECHIR</button>
+ <button class="menu-btn" id="btnFuir" onclick="cmd('run')">FUIR</button>
  </div>
  </div>
  </div>
@@ -185,8 +185,8 @@
    const encounterImg = document.getElementById('encounterImg');
    const gameWrap = document.getElementById('gameWrap');
 
-   if (playerImg) playerImg.src = `pictures/player-${playerType}.png`;
-   if (encounterImg) encounterImg.src = `pictures/encounter-${encounterType}.png`;
+   if (playerImg) playerImg.src = `player-${playerType}.png`;
+   if (encounterImg) encounterImg.src = `encounter-${encounterType}.png`;
 
    if (gameWrap) {
      gameWrap.classList.toggle('player-type-1', playerType === '1');
@@ -320,7 +320,7 @@
  if(phase==='name') return;
  if(phase==='boot'){startGame();return;}
  if(phase!=='menu') return;
- const ids=['btnAskOut','btnFight','btnOverthink','btnRun'];
+ const ids=['btnReserver','btnFight','btnReflechir','btnFuir'];
  const cur=ids.findIndex(id=>document.getElementById(id).classList.contains('cursor-on'));
  let next=cur;
  if(e.key==='ArrowRight') next=cur%2===0?cur+1:cur;
@@ -343,10 +343,9 @@
  }
 
  function setButtonsActive(active) {
- ['btnAskOut','btnFight','btnOverthink','btnRun'].forEach(id => {
+ ['btnReserver','btnFight','btnReflechir','btnFuir'].forEach(id => {
  const btn = document.getElementById(id);
- if(active) btn.classList.remove('inactive');
- else btn.classList.add('inactive');
+ if(btn) { if(active) btn.classList.remove('inactive'); else btn.classList.add('inactive'); }
  });
  }
 
