@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rare Encounter</title>
+<title>Une Semaine à Londres</title>
 <meta property="og:title" content="Une Semaine à Londres">
 <meta property="og:description" content="Prends tes billets!✨">
 <meta property="og:image" content="title-bg.png">
@@ -37,7 +37,7 @@
  <!-- STELLA HP — top left -->
  <div class="hp-wrap-stella" style="position:relative">
    <img class="hp-box-img" src="stella-hp-frame.png" alt="">
-   <div class="hp-name-overlay" id="Stella"></div>
+   <div class="hp-name-overlay" id="crushNameHp"></div>
    <div class="hp-bar-slot">
      <div class="hp-bar-fill" id="hpFillStella" style="width:100%"></div>
    </div>
@@ -46,7 +46,7 @@
  <!-- SIMON HP — bottom right -->
  <div class="hp-wrap-simon" style="position:relative">
    <img class="hp-box-img" src="simon-hp-frame.png" alt="">
-   <div class="hp-name-overlay" id="Simon"></div>
+   <div class="hp-name-overlay" id="playerNameHp"></div>
    <div class="hp-bar-slot">
      <div class="hp-bar-fill" id="hpFillSimon" style="width:100%"></div>
    </div>
@@ -84,7 +84,7 @@
  <!-- LEVELUP - full game cover -->
  <div class="full-overlay" id="levelupScreen" onclick="showFinal()">
  <div class="lu-fanfare">* * *</div>
- <div class="lu-title"><span id="Simon"></span> est passé au niveau supérieur!</div>
+ <div class="lu-title"><span id="playerNameLevel"></span> est passé au niveau supérieur!</div>
  <div class="lu-stats">
  <div class="lu-row"><span>COURAGE</span><span class="lu-new">5 → MAX ↑↑</span></div>
  <div class="lu-row"><span>HP</span><span class="lu-new">10 → MAX ↑↑</span></div>
@@ -163,7 +163,7 @@
    setText('crushNameFinalTitle', crush);
    setText('crushNameFinalMsg', crush);
    setText('crushNameFrom', crush.toLowerCase());
-   document.title = crush !== '???' ? `${crush} appeared!` : 'Rare Encounter';
+   document.title = crush !== '???' ? `${crush} appeared!` : 'Une Semaine à Londres';
     const studioEl = document.getElementById('studioName');
     if (studioEl) studioEl.textContent = `✦ ${player} STUDIOS 2026 ✦`;
  }
