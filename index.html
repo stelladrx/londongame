@@ -284,16 +284,22 @@
 
  window.addEventListener('DOMContentLoaded', () => {
    updateResponsiveScale();
-   document.getElementById('playerInput').value = crushName;
-   document.getElementById('crushInput').value = playerName;
+   const playerInputEl = document.getElementById('playerInput');
+   const crushInputEl = document.getElementById('crushInput');
+   if (playerInputEl) playerInputEl.value = crushName;
+   if (crushInputEl) crushInputEl.value = playerName;
    const playerTypeRadio = document.getElementById(`playerType${encounterType}`);
    const encounterTypeRadio = document.getElementById(`encounterType${playerType}`);
    if (playerTypeRadio) playerTypeRadio.checked = true;
    if (encounterTypeRadio) encounterTypeRadio.checked = true;
    updateNames();
    updateCharacters();
+   const nameScreen = document.getElementById('nameScreen');
    if (params.has('player') || params.has('crush') || params.has('playerType') || params.has('encounterType') || params.has('playerChar') || params.has('crushChar')) {
-     document.getElementById('nameScreen').classList.add('hide');
+     if (nameScreen) nameScreen.classList.add('hide');
+     resetGameState();
+     phase = 'boot';
+   } else if (!nameScreen) {
      resetGameState();
      phase = 'boot';
    }

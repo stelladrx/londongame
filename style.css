@@ -17,7 +17,7 @@
 html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
 
 body {
- background: #e8dfc9;
+ background: #4fcfe9;
  display: flex;
  align-items: center;
  justify-content: center;
@@ -113,7 +113,7 @@ body {
 .title-start-btn {
  font-family: 'VT323', monospace;
  font-size: 22px; color: #1A1A1A;
- background: #FFC567;
+ background: #4fcfe9;
  border: 3px solid #1A1A1A;
  padding: 6px 24px;
  cursor: pointer;
