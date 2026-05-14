@@ -163,7 +163,7 @@
    setText('crushNameFinalTitle', crush);
    setText('crushNameFinalMsg', crush);
    setText('crushNameFrom', crush.toLowerCase());
-   document.title = crush !== '???' ? `${crush} appeared!` : 'Une Semaine à Londres';
+   document.title = 'Une Semaine à Londres';
     const studioEl = document.getElementById('studioName');
     if (studioEl) studioEl.textContent = `✦ ${player} STUDIOS 2026 ✦`;
  }
@@ -350,7 +350,7 @@
  }
 
  function showMenu(){
- document.getElementById('dialogText').innerHTML=`What will<br><b>${displayName(playerName, DEFAULT_PLAYER)}</b> do?`;
+ document.getElementById('dialogText').innerHTML=`Que va faire <br><b>${displayName(playerName, DEFAULT_PLAYER)}</b> ?`;
  document.getElementById('menuPanel').classList.add('show');
  setButtonsActive(true);
  phase='menu';
@@ -358,7 +358,7 @@
 
  function runIntro(){
  setStellaState('nervous'); phase='intro';
- type(`Wild ${displayName(crushName, DEFAULT_CRUSH)} appeared!\n${displayName(crushName, DEFAULT_CRUSH)} looks nervous…`,()=>{setStellaState('normal');showMenu();});
+ type(`Wild ${displayName(crushName, DEFAULT_CRUSH)} appearait!\n${displayName(crushName, DEFAULT_CRUSH)} semble nerveux…`,()=>{setStellaState('normal');showMenu();});
  }
 
 
@@ -394,13 +394,12 @@
 
  function hearts(n){
    const c = document.getElementById('heartContainer');
-   const assets = ['pictures/heart.png','pictures/spark.png','pictures/star.png'];
+   const colors = ['#FB7DA8','#FFC567','#FF6B6B','#fff'];
    for(let i=0;i<n;i++) setTimeout(()=>{
-     const h = document.createElement('img');
-     const size = 16 + Math.random() * 18;
-     h.src = assets[Math.floor(Math.random()*assets.length)];
+     const h = document.createElement('div');
+     const size = 10 + Math.random() * 10;
      h.className = 'heart-p';
-     h.style.cssText = `left:${8+Math.random()*84}%;top:${4+Math.random()*70}%;width:${size}px;height:auto;image-rendering:pixelated;`;
+     h.style.cssText = `left:${8+Math.random()*84}%;top:${4+Math.random()*70}%;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:2px;`;
      c.appendChild(h);
      setTimeout(()=>h.remove(), 1400);
    }, i*60);
@@ -408,12 +407,11 @@
 
  function spawnFireworks(){
    const c = document.getElementById('heartContainer');
-   const assets = ['pictures/spark.png','pictures/star.png','pictures/heart.png'];
+   const colors = ['#FFC567','#FB7DA8','#fff','#FF6B6B','#4fcfe9'];
    for(let i=0;i<24;i++) setTimeout(()=>{
-     const h = document.createElement('img');
-     const size = 20 + Math.random() * 24;
-     h.src = assets[Math.floor(Math.random()*assets.length)];
-     h.style.cssText = `position:absolute;width:${size}px;height:auto;left:${5+Math.random()*90}%;top:${5+Math.random()*80}%;animation:hfloat ${0.8+Math.random()*0.8}s ease-out forwards;pointer-events:none;z-index:15;image-rendering:pixelated;`;
+     const h = document.createElement('div');
+     const size = 8 + Math.random() * 14;
+     h.style.cssText = `position:absolute;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:2px;left:${5+Math.random()*90}%;top:${5+Math.random()*80}%;animation:hfloat ${0.8+Math.random()*0.8}s ease-out forwards;pointer-events:none;z-index:15;`;
      c.appendChild(h);
      setTimeout(()=>h.remove(), 1600);
    }, i*50);
@@ -423,20 +421,20 @@
  if(phase!=='menu') return;
  phase='animating';
  setButtonsActive(false);
- if(c==='askout') doAskOut();
- else if(c==='fight') doFight();
- else if(c==='overthink') doOverthink();
- else if(c==='run') doRun();
+ if(c==='askout') doReserver();
+ else if(c==='fight') doAttaquer();
+ else if(c==='overthink') doReflechir();
+ else if(c==='run') doFuir();
  }
 
- function doAskOut(){
+ function doReserver(){
  setStellaState('nervous');
- type(`${displayName(playerName, DEFAULT_PLAYER)} took a deep breath…`,()=>
- type(`${displayName(playerName, DEFAULT_PLAYER)} used ASK OUT! `,()=>
- type("It's super effective!",()=>{
+ type(`${displayName(playerName, DEFAULT_PLAYER)} prend une grande respiration…`,()=>
+ type(`${displayName(playerName, DEFAULT_PLAYER)} utilise RESERVER! `,()=>
+ type("C'est super efficace!",()=>{
  setStellaState('happy');hearts(8);
- type('A critical hit! ',()=>
- type(`${displayName(crushName, DEFAULT_CRUSH)} fainted…\nwith joy `,()=>{
+ type('Un coup critique! ',()=>
+ type(`${displayName(crushName, DEFAULT_CRUSH)} est\'contente,\nbien joué `,()=>{
  let n=0;
  const iv=setInterval(()=>{
  document.getElementById('gameWrap').classList.toggle('flash');
@@ -449,31 +447,31 @@
  );
  }
 
- function doFight(){
+ function doAttaquer(){
  fightCount++;setStellaState('angry');
- type(`${displayName(playerName, DEFAULT_PLAYER)} used ATTACK!`,()=>{
+ type(`${displayName(playerName, DEFAULT_PLAYER)} utilise ATTAQUER!`,()=>{
  dmgstella(1);
- type('It did 1 damage.',()=>{
- type(`${displayName(crushName, DEFAULT_CRUSH)} fights back! `,()=>{
+ type('Il inflige 1 dégât.',()=>{
+ type(`${displayName(crushName, DEFAULT_CRUSH)} riposte! `,()=>{
  shake();dmgSimon(99);
- if(simonHp<=0){setStellaState('normal');type(`${displayName(playerName, DEFAULT_PLAYER)} fainted…`,()=>setTimeout(showGameover,600));return;}
- const m=[`${displayName(crushName, DEFAULT_CRUSH)} used GLARE!\n-99 HP`,'Don\'t try that.\n-99 HP','SERIOUSLY?\n-99 HP'];
+ if(simonHp<=0){setStellaState('normal');type(`${displayName(playerName, DEFAULT_PLAYER)} est K.O.…`,()=>setTimeout(showGameover,600));return;}
+ const m=[`${displayName(crushName, DEFAULT_CRUSH)} utilise REGARD NOIR!\n-99 HP`,'N'essaye\'pas ça.\n-99 HP','SERIEUSEMENT?\n-99 HP'];
  type(m[Math.min(fightCount-1,m.length-1)],()=>{setStellaState('normal');showMenu();});
  });
  });
  });
  }
 
- function doOverthink(){
+ function doReflechir(){
  overthinkCount++;
- if(simonHp<=0){type(`${displayName(playerName, DEFAULT_PLAYER)} fainted…`,()=>setTimeout(showGameover,600));return;}
+ if(simonHp<=0){type(`${displayName(playerName, DEFAULT_PLAYER)} est K.O.…`,()=>setTimeout(showGameover,600));return;}
 
  const applyDmg = (cb) => {
  shake();
  setTimeout(()=>{
  dmgSimon(15);
  if(simonHp<=0){
- type(`${displayName(playerName, DEFAULT_PLAYER)} fainted…`,()=>setTimeout(showGameover,600));
+ type(`${displayName(playerName, DEFAULT_PLAYER)} est K.O.…`,()=>setTimeout(showGameover,600));
  } else {
  cb();
  }
@@ -483,8 +481,8 @@
  if(overthinkCount===1){
   const reflexive = playerType === '2' ? 'herself' : 'himself';
 
-  type(`${displayName(playerName, DEFAULT_PLAYER)} is thinking…\n${displayName(playerName, DEFAULT_PLAYER)} is thinking…`, () =>
-  type(`${displayName(playerName, DEFAULT_PLAYER)} hurt ${reflexive}\nin confusion! `, () =>
+  type(`${displayName(playerName, DEFAULT_PLAYER)} is thinking…\n${displayName(playerName, DEFAULT_PLAYER)} reflechis…`, () =>
+  type(`${displayName(playerName, DEFAULT_PLAYER)} s'est blessé ${reflexive}\n dans sa confusion! `, () =>
   applyDmg(() =>
   type('-15 HP!', () => showMenu())
   )
@@ -493,7 +491,7 @@
  }else if(overthinkCount===2){
  setStellaState('sad');
  type('Still thinking…', () =>
- type(`${displayName(playerName, DEFAULT_PLAYER)} hurt himself\nagain! `, () =>
+ type(`${displayName(playerName, DEFAULT_PLAYER)} s'est blessé\nENCORE! `, () =>
  applyDmg(() =>
  type('-15 HP again!', () => { setStellaState('normal'); showMenu(); })
  )
@@ -501,20 +499,20 @@
  );
  } else {
  setStellaState('sad');
- type(`…${displayName(playerName, DEFAULT_PLAYER)}, please.`, () =>
- type(`${displayName(crushName, DEFAULT_CRUSH)} sighs quietly.\n -15 HP`, () =>
+ type(`…${displayName(playerName, DEFAULT_PLAYER)}, t'abuses.`, () =>
+ type(`${displayName(crushName, DEFAULT_CRUSH)} soupire...\n -15 HP`, () =>
  applyDmg(() => { setStellaState('normal'); showMenu(); })
  )
  );
  }
  }
 
- function doRun(){
+ function doFuir(){
  const runMsgs = [
- [`${displayName(playerName, DEFAULT_PLAYER)} tried to run…`, `But ${displayName(crushName, DEFAULT_CRUSH)} blocked\nthe way! `, "There is no escape."],
- [`${displayName(playerName, DEFAULT_PLAYER)} looked for\nan exit…`, `${displayName(crushName, DEFAULT_CRUSH)} is everywhere.`, "Nice try. "],
- [`${displayName(playerName, DEFAULT_PLAYER)} slowly\nbacked away…`, `${displayName(crushName, DEFAULT_CRUSH)} stepped closer.`, "You\'re not going\nanywhere. "],
- [`${displayName(playerName, DEFAULT_PLAYER)}: maybe I\nshould just leave?`, `${displayName(crushName, DEFAULT_CRUSH)}: no. `, "…ok fine."],
+ [`${displayName(playerName, DEFAULT_PLAYER)} essaye de fuir…`, `mais ${displayName(crushName, DEFAULT_CRUSH)} bloque\nle passage! `, "C'est sans issue."],
+ [`${displayName(playerName, DEFAULT_PLAYER)} cherche\nune sortie…`, `${displayName(crushName, DEFAULT_CRUSH)} est partout.`, "Bien essayé. "],
+ [`${displayName(playerName, DEFAULT_PLAYER)} recule\nlentement…`, `${displayName(crushName, DEFAULT_CRUSH)} s'approche.`, "Tu\'va aller nulle part. "],
+ [`${displayName(playerName, DEFAULT_PLAYER)}: peut-être que\nje devrais juste fuir?`, `${displayName(crushName, DEFAULT_CRUSH)}: non. `, "…ok vas-y."],
  ];
  const msgs = runMsgs[Math.floor(Math.random() * runMsgs.length)];
  type(msgs[0], () =>
