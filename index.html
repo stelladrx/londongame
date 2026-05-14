@@ -134,7 +134,7 @@
  let crushName = cleanName(params.get('crush')) || DEFAULT_CRUSH;
  let playerType = cleanType(params.get('playerType') || params.get('playerChar')) || '1';
  let encounterType = cleanType(params.get('encounterType') || params.get('crushChar')) || '1';
- let phase='name', simonHp=100, simonMax=100, stellaHp=100, stellaMax=100;
+ let phase='boot', simonHp=100, simonMax=100, stellaHp=100, stellaMax=100;
  let overthinkCount=0, fightCount=0, quitClicks=0, tyTimer=null;
 
  function cleanName(value) {
@@ -294,15 +294,7 @@
    if (encounterTypeRadio) encounterTypeRadio.checked = true;
    updateNames();
    updateCharacters();
-   const nameScreen = document.getElementById('nameScreen');
-   if (params.has('player') || params.has('crush') || params.has('playerType') || params.has('encounterType') || params.has('playerChar') || params.has('crushChar')) {
-     if (nameScreen) nameScreen.classList.add('hide');
-     resetGameState();
-     phase = 'boot';
-   } else if (!nameScreen) {
-     resetGameState();
-     phase = 'boot';
-   }
+   resetGameState();
  });
 
  function setStellaState(s) {
