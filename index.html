@@ -103,7 +103,7 @@
  <div class="go-msg">tu as perdu<br>la meilleure opportunité...</div>
  <div class="go-menu">
    <button class="go-btn" onclick="handleRetry()">REESSAYER</button>
-   <button class="go-btn dim" id="quitBtn" onmouseenter="handleQuitHover(event)">QUITTER</button>
+   <button class="go-btn dim" id="quitBtn" onmouseenter="handleQuitHover(event)" onmouseleave="this.style.transform=''">QUITTER</button>
  </div>
  </div>
 
@@ -111,7 +111,7 @@
  <div class="full-overlay" id="finalScreen">
  <div id="finalHearts" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden"></div>
  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px;width:100%">
- <div class="final-title"><span id="crushNameFinalTitle"></span> joined<br>your party!</div>
+ <div class="final-title"><span id="crushNameFinalTitle"></span> à rejoint<br>ton équipe!</div>
  <div class="final-box">
  <div class="final-msg">* NOUVELLE QUETE DEBLOQUEE *<br>OBJECTIF SUIVANT:<br>&gt; Réserver les billets.<br>&gt; Faire la valise.<br>&gt; Arreter de tergiverser.<br><br><span style="color:#FFC567">[ L'AVENTURE CONTINUE... ]</span></div>
  <div class="final-from">— from <span id="crushNameFrom"></span></div>
@@ -350,7 +350,7 @@
 
  function runIntro(){
  setStellaState('nervous'); phase='intro';
- type(`Wild ${displayName(crushName, DEFAULT_CRUSH)} appearait!\n${displayName(crushName, DEFAULT_CRUSH)} semble nerveux…`,()=>{setStellaState('normal');showMenu();});
+ type(`Un ${displayName(crushName, DEFAULT_CRUSH)} sauvage appearait!\n${displayName(crushName, DEFAULT_CRUSH)} semble préparée…`,()=>{setStellaState('normal');showMenu();});
  }
 
 
@@ -426,7 +426,7 @@
  type("C'est super efficace!",()=>{
  setStellaState('happy');hearts(8);
  type('Un coup critique! ',()=>
- type(`${displayName(crushName, DEFAULT_CRUSH)} est\'contente,\nbien joué `,()=>{
+ type(`${displayName(crushName, DEFAULT_CRUSH)} est\contente,\nbien joué `,()=>{
  let n=0;
  const iv=setInterval(()=>{
  document.getElementById('gameWrap').classList.toggle('flash');
@@ -473,7 +473,7 @@
  if(overthinkCount===1){
   const reflexive = playerType === '2' ? 'herself' : 'himself';
 
-  type(`${displayName(playerName, DEFAULT_PLAYER)} is thinking…\n${displayName(playerName, DEFAULT_PLAYER)} reflechis…`, () =>
+  type(`${displayName(playerName, DEFAULT_PLAYER)} réflechis…\n${displayName(playerName, DEFAULT_PLAYER)} reflechis encore…`, () =>
   type(`${displayName(playerName, DEFAULT_PLAYER)} s'est blessé ${reflexive}\n dans sa confusion! `, () =>
   applyDmg(() =>
   type('-15 HP!', () => showMenu())
@@ -482,7 +482,7 @@
   );
  }else if(overthinkCount===2){
  setStellaState('sad');
- type('Still thinking…', () =>
+ type('Réfléchis toujours…', () =>
  type(`${displayName(playerName, DEFAULT_PLAYER)} s'est blessé\nENCORE! `, () =>
  applyDmg(() =>
  type('-15 HP again!', () => { setStellaState('normal'); showMenu(); })
@@ -553,8 +553,8 @@
  setHpBar('hpFillStella', 100);
  document.getElementById('hpNum').textContent=simonMax+' / '+simonMax;
  const qb=document.getElementById('quitBtn');
- qb.textContent='Quit';qb.style.color='';qb.style.borderColor='';
- setStellaState('normal');updateNames();type('Rewinding time…',runIntro);
+ qb.textContent='QUITTER';qb.style.color='';qb.style.borderColor='';qb.style.transform='';
+ setStellaState('normal');updateNames();type('Retournons dans le passé…',runIntro);
  }
 
  function handleQuitHover(e){
