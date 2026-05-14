@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rare Encounter</title>
+<meta property="og:title" content="Une Semaine à Londres">
+<meta property="og:description" content="Prends tes billets!✨">
+<meta property="og:image" content="title-bg.png">
+<meta property="og:type" content="website">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<!-- TITLE -->
+<div id="titleScreen">
+ <div class="title-wrap">
+ <div class="title-bg"></div>
+ <div class="title-content">
+ <div class="title-box">
+ <div class="title-eyebrow" id="studioName">✦ STELLA STUDIOS 2026 ✦</div>
+ <div class="title-logo">UNE SEMAINE<br>A LONDRES</div>
+ <button class="title-start-btn" onclick="startGame(); event.stopPropagation();">START</button>
+ </div>
+ </div>
+ </div>
+</div>
+
+<!-- GAME -->
+<div class="game-shell" id="gameShell">
+<div class="game-wrap" id="gameWrap">
+
+ <div class="battle-scene" id="battleScene">
+
+ <!-- STELLA HP — top left -->
+ <div class="hp-wrap-stella" style="position:relative">
+   <img class="hp-box-img" src="stella-hp-frame.png" alt="">
+   <div class="hp-name-overlay" id="Stella"></div>
+   <div class="hp-bar-slot">
+     <div class="hp-bar-fill" id="hpFillStella" style="width:100%"></div>
+   </div>
+ </div>
+
+ <!-- SIMON HP — bottom right -->
+ <div class="hp-wrap-simon" style="position:relative">
+   <img class="hp-box-img" src="simon-hp-frame.png" alt="">
+   <div class="hp-name-overlay" id="Simon"></div>
+   <div class="hp-bar-slot">
+     <div class="hp-bar-fill" id="hpFillSimon" style="width:100%"></div>
+   </div>
+   <div class="hp-num-text" id="hpNum">100/100</div>
+ </div>
+
+ <!-- stella -->
+ <div class="char-stella" id="charStella">
+ <img id="encounterImg" src="" alt="">
+ </div>
+
+ <!-- simon -->
+ <div class="char-simon" id="charSimon">
+ <img id="playerImg" src="" alt="">
+ </div>
+
+ <div id="heartContainer"></div>
+ </div>
+
+ <!-- BOTTOM -->
+ <div class="bottom-area" id="bottomArea">
+ <div class="dialog-inner">
+ <div class="dialog-text" id="dialogText"></div>
+ </div>
+ <div class="menu-panel show" id="menuPanel">
+ <div class="menu-grid">
+ <button class="menu-btn cursor-on" id="btnReserver" onclick="cmd('réserver')">RESERVER</button>
+ <button class="menu-btn" id="btnFight" onclick="cmd('fight')">ATTAQUER</button>
+ <button class="menu-btn" id="btnReflechir" onclick="cmd('Réflechir')">REFLECHIR</button>
+ <button class="menu-btn" id="btnFuir" onclick="cmd('fuir')">FUIR</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- LEVELUP - full game cover -->
+ <div class="full-overlay" id="levelupScreen" onclick="showFinal()">
+ <div class="lu-fanfare">* * *</div>
+ <div class="lu-title"><span id="Simon"></span> est passé au niveau supérieur!</div>
+ <div class="lu-stats">
+ <div class="lu-row"><span>COURAGE</span><span class="lu-new">5 → MAX ↑↑</span></div>
+ <div class="lu-row"><span>HP</span><span class="lu-new">10 → MAX ↑↑</span></div>
+ <div class="lu-row"><span>BONHEUR</span><span class="lu-new">23 → MAX ↑↑</span></div>
+ </div>
+ <div class="lu-skill">
+ <div class="lu-skill-label">★ NOUVELLE MAP DEBLOQUEE ★</div>
+ <div class="lu-skill-name"> LONDRES, UK </div>
+ </div>
+ <div class="lu-tap">▼ cliquez pour continuer</div>
+ </div>
+
+ <!-- GAMEOVER - full game cover -->
+ <div class="full-overlay" id="gameoverScreen">
+ <div class="go-title">GAME<br>OVER</div>
+ <div class="go-msg">tu as perdu<br>la meilleure opportunité...</div>
+ <div class="go-menu">
+   <button class="go-btn" onclick="handleRetry()">REESSAYER</button>
+   <button class="go-btn dim" id="quitBtn" onmouseenter="handleQuitHover(event)">QUITTER</button>
+ </div>
+ </div>
+
+ <!-- FINAL - full game cover -->
+ <div class="full-overlay" id="finalScreen">
+ <div id="finalHearts" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden"></div>
+ <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px;width:100%">
+ <div class="final-title"><span id="crushNameFinalTitle"></span> joined<br>your party!</div>
+ <div class="final-box">
+ <div class="final-msg">* NOUVELLE QUETE DEBLOQUEE *<br>OBJECTIF SUIVANT:<br>&gt; Réserver les billets.<br>&gt; Faire la valise.<br>&gt; Arreter de tergiverser.<br><br><span style="color:#FFC567">[ L'AVENTURE CONTINUE... ]</span></div>
+ <div class="final-from">— from <span id="crushNameFrom"></span></div>
+ <div class="final-actions">
+   <button class="final-replay-btn" onclick="replayGame(event)">REJOUER</button>
+   <button class="final-replay-btn reset" onclick="resetToNameScreen(event)">RESET</button>
+ </div>
+ </div>
+ </div>
+ </div>
+
+</div>
+</div>
+
+<script>
+ const DEFAULT_PLAYER = 'SIMON';
+ const DEFAULT_CRUSH = 'STELLA';
+ const params = new URLSearchParams(window.location.search);
+ let playerName = cleanName(params.get('player')) || DEFAULT_PLAYER;
+ let crushName = cleanName(params.get('crush')) || DEFAULT_CRUSH;
+ let playerType = cleanType(params.get('playerType') || params.get('playerChar')) || '1';
+ let encounterType = cleanType(params.get('encounterType') || params.get('crushChar')) || '1';
+ let phase='name', simonHp=100, simonMax=100, stellaHp=100, stellaMax=100;
+ let overthinkCount=0, fightCount=0, quitClicks=0, tyTimer=null;
+
+ function cleanName(value) {
+   return (value || '').toString().trim().replace(/[<>]/g, '').slice(0, 12);
+ }
+
+ function cleanType(value) {
+   return value === '2' ? '2' : '1';
+ }
+
+ function displayName(name) {
+   const cleaned = cleanName(name);
+   return cleaned ? cleaned.toUpperCase() : '???';
+ }
+
+ function updateNames() {
+   const player = displayName(playerName);
+   const crush = displayName(crushName);
+   const setText = (id, text) => {
+     const el = document.getElementById(id);
+     if (el) el.textContent = text;
+   };
+   setText('playerNameHp', player);
+   setText('crushNameHp', crush);
+   setText('playerNameLevel', player);
+   setText('crushNameFinalTitle', crush);
+   setText('crushNameFinalMsg', crush);
+   setText('crushNameFrom', crush.toLowerCase());
+   document.title = crush !== '???' ? `${crush} appeared!` : 'Rare Encounter';
+    const studioEl = document.getElementById('studioName');
+    if (studioEl) studioEl.textContent = `✦ ${player} STUDIOS 2026 ✦`;
+ }
+
+ function getSelectedPlayerType() {
+   const checked = document.querySelector('input[name="playerType"]:checked');
+   return cleanType(checked ? checked.value : playerType);
+ }
+
+ function getSelectedEncounterType() {
+   const checked = document.querySelector('input[name="encounterType"]:checked');
+   return cleanType(checked ? checked.value : encounterType);
+ }
+
+ function updateCharacters() {
+   playerType = cleanType(playerType);
+   encounterType = cleanType(encounterType);
+   const playerImg = document.getElementById('playerImg');
+   const encounterImg = document.getElementById('encounterImg');
+   const gameWrap = document.getElementById('gameWrap');
+
+   if (playerImg) playerImg.src = `pictures/player-${playerType}.png`;
+   if (encounterImg) encounterImg.src = `pictures/encounter-${encounterType}.png`;
+
+   if (gameWrap) {
+     gameWrap.classList.toggle('player-type-1', playerType === '1');
+     gameWrap.classList.toggle('player-type-2', playerType === '2');
+     gameWrap.classList.toggle('encounter-type-1', encounterType === '1');
+     gameWrap.classList.toggle('encounter-type-2', encounterType === '2');
+   }
+ }
+
+ function getCustomUrl() {
+   const url = new URL(window.location.href);
+
+   // In the battle layout:
+   // player = lower HP / front character = CRUSH
+   // crush  = upper HP / back character = YOUR NAME
+   url.searchParams.set('player', cleanName(document.getElementById('crushInput').value));
+   url.searchParams.set('crush', cleanName(document.getElementById('playerInput').value));
+   url.searchParams.set('playerType', getSelectedEncounterType());
+   url.searchParams.set('encounterType', getSelectedPlayerType());
+   return url.toString();
+ }
+
+ function resetGameState() {
+   simonHp = simonMax;
+   stellaHp = stellaMax;
+   overthinkCount = 0;
+   fightCount = 0;
+   quitClicks = 0;
+   setHpBar('hpFillSimon', 100);
+   setHpBar('hpFillStella', 100);
+   const hpNum = document.getElementById('hpNum');
+   if (hpNum) hpNum.textContent = simonMax + '/' + simonMax;
+   ['levelupScreen', 'gameoverScreen', 'finalScreen'].forEach(id => {
+     const el = document.getElementById(id);
+     if (el) el.classList.remove('show');
+   });
+   setStellaState('normal');
+   updateCharacters();
+ }
+
+ function playCustomGame() {
+   // YOUR NAME should appear on the upper HP / back character.
+   crushName = cleanName(document.getElementById('playerInput').value);
+   encounterType = getSelectedPlayerType();
+
+   // CRUSH NAME should appear on the lower HP / front character.
+   playerName = cleanName(document.getElementById('crushInput').value);
+   playerType = getSelectedEncounterType();
+
+   updateNames();
+   updateCharacters();
+   resetGameState();
+   document.getElementById('nameScreen').classList.add('hide');
+   phase = 'boot';
+ }
+
+ async function copyCustomLink() {
+   const status = document.getElementById('shareStatus');
+   const url = getCustomUrl();
+   try {
+     await navigator.clipboard.writeText(url);
+     status.textContent = 'Link copied. Send it ✨';
+   } catch (err) {
+     status.textContent = url;
+   }
+ }
+
+
+ function updateResponsiveScale() {
+   const baseW = 620;
+   const baseH = 456;
+   const safeGap = 18;
+   const availableW = Math.max(260, document.documentElement.clientWidth - safeGap);
+   const availableH = Math.max(260, document.documentElement.clientHeight - safeGap);
+   const scale = Math.min(1, availableW / baseW, availableH / baseH);
+   document.documentElement.style.setProperty('--game-scale', scale);
+
+   const gameShell = document.getElementById('gameShell');
+   const gameWrap = document.getElementById('gameWrap');
+   const titleWrap = document.querySelector('.title-wrap');
+
+   if (gameShell && gameWrap) {
+     gameShell.style.width = (baseW * scale) + 'px';
+     gameShell.style.height = (baseH * scale) + 'px';
+     gameWrap.style.transform = `scale(${scale})`;
+   }
+
+   if (titleWrap) {
+     titleWrap.style.transform = `scale(${scale})`;
+   }
+ }
+
+ window.addEventListener('resize', updateResponsiveScale);
+ window.addEventListener('orientationchange', updateResponsiveScale);
+
+ window.addEventListener('DOMContentLoaded', () => {
+   updateResponsiveScale();
+   document.getElementById('playerInput').value = crushName;
+   document.getElementById('crushInput').value = playerName;
+   const playerTypeRadio = document.getElementById(`playerType${encounterType}`);
+   const encounterTypeRadio = document.getElementById(`encounterType${playerType}`);
+   if (playerTypeRadio) playerTypeRadio.checked = true;
+   if (encounterTypeRadio) encounterTypeRadio.checked = true;
+   updateNames();
+   updateCharacters();
+   if (params.has('player') || params.has('crush') || params.has('playerType') || params.has('encounterType') || params.has('playerChar') || params.has('crushChar')) {
+     document.getElementById('nameScreen').classList.add('hide');
+     resetGameState();
+     phase = 'boot';
+   }
+ });
+
+ function setStellaState(s) {
+   document.getElementById('charStella').className = 'char-stella'+(s&&s!=='normal'?' '+s:'');
+ }
+
+ function startGame() {
+ if(phase!=='boot') return;
+ phase='booting';
+ document.getElementById('titleScreen').classList.add('fade-out');
+ setTimeout(runIntro, 650);
+ }
+
+ document.addEventListener('keydown', e => {
+ if(phase==='name') return;
+ if(phase==='boot'){startGame();return;}
+ if(phase!=='menu') return;
+ const ids=['btnAskOut','btnFight','btnOverthink','btnRun'];
+ const cur=ids.findIndex(id=>document.getElementById(id).classList.contains('cursor-on'));
+ let next=cur;
+ if(e.key==='ArrowRight') next=cur%2===0?cur+1:cur;
+ else if(e.key==='ArrowLeft') next=cur%2===1?cur-1:cur;
+ else if(e.key==='ArrowDown') next=cur<2?cur+2:cur;
+ else if(e.key==='ArrowUp') next=cur>1?cur-2:cur;
+ else if(e.key==='Enter'||e.key.toLowerCase()==='z'){document.getElementById(ids[cur]).click();return;}
+ else return;
+ ids.forEach((id,i)=>document.getElementById(id).classList.toggle('cursor-on',i===next));
+ });
+
+ function type(text,cb,spd=38){
+ if(tyTimer) clearInterval(tyTimer);
+ const el=document.getElementById('dialogText');
+ el.innerHTML='';let i=0;
+ tyTimer=setInterval(()=>{
+ if(i<text.length){el.innerHTML+=text[i]==='\n'?'<br>':text[i];i++;}
+ else{el.innerHTML+='<span class="cursor-blink"></span>';clearInterval(tyTimer);tyTimer=null;if(cb)setTimeout(cb,850);}
+ },spd);
+ }
+
+ function setButtonsActive(active) {
+ ['btnAskOut','btnFight','btnOverthink','btnRun'].forEach(id => {
+ const btn = document.getElementById(id);
+ if(active) btn.classList.remove('inactive');
+ else btn.classList.add('inactive');
+ });
+ }
+
+ function showMenu(){
+ document.getElementById('dialogText').innerHTML=`What will<br><b>${displayName(playerName, DEFAULT_PLAYER)}</b> do?`;
+ document.getElementById('menuPanel').classList.add('show');
+ setButtonsActive(true);
+ phase='menu';
+ }
+
+ function runIntro(){
+ setStellaState('nervous'); phase='intro';
+ type(`Wild ${displayName(crushName, DEFAULT_CRUSH)} appeared!\n${displayName(crushName, DEFAULT_CRUSH)} looks nervous…`,()=>{setStellaState('normal');showMenu();});
+ }
+
+
+
+ function setHpBar(id, pct) {
+   const bar = document.getElementById(id);
+   if (!bar) return;
+   bar.style.width = Math.max(0, pct) + '%';
+   bar.style.background = pct > 50
+     ? 'linear-gradient(180deg,#58D858,#30A830)'
+     : pct > 20
+     ? 'linear-gradient(180deg,#F8D840,#C8A820)'
+     : 'linear-gradient(180deg,#F86040,#C83020)';
+ }
+
+ function dmgSimon(n) {
+   simonHp = Math.max(0, simonHp - n);
+   setHpBar('hpFillSimon', simonHp / simonMax * 100);
+   document.getElementById('hpNum').textContent = simonHp + ' / ' + simonMax;
+   const g = document.getElementById('charsimon');
+   g.classList.add('simon-hit'); setTimeout(()=>g.classList.remove('simon-hit'), 380);
+ }
+
+ function dmgstella(n) {
+   stellaHp = Math.max(0, stellaHp - n);
+   setHpBar('hpFillStella', stellaHp / stellaMax * 100);
+ }
+
+ function shake(){
+ const g=document.getElementById('gameWrap');
+ g.classList.add('shake');setTimeout(()=>g.classList.remove('shake'),420);
+ }
+
+ function hearts(n){
+   const c = document.getElementById('heartContainer');
+   const assets = ['pictures/heart.png','pictures/spark.png','pictures/star.png'];
+   for(let i=0;i<n;i++) setTimeout(()=>{
+     const h = document.createElement('img');
+     const size = 16 + Math.random() * 18;
+     h.src = assets[Math.floor(Math.random()*assets.length)];
+     h.className = 'heart-p';
+     h.style.cssText = `left:${8+Math.random()*84}%;top:${4+Math.random()*70}%;width:${size}px;height:auto;image-rendering:pixelated;`;
+     c.appendChild(h);
+     setTimeout(()=>h.remove(), 1400);
+   }, i*60);
+ }
+
+ function spawnFireworks(){
+   const c = document.getElementById('heartContainer');
+   const assets = ['pictures/spark.png','pictures/star.png','pictures/heart.png'];
+   for(let i=0;i<24;i++) setTimeout(()=>{
+     const h = document.createElement('img');
+     const size = 20 + Math.random() * 24;
+     h.src = assets[Math.floor(Math.random()*assets.length)];
+     h.style.cssText = `position:absolute;width:${size}px;height:auto;left:${5+Math.random()*90}%;top:${5+Math.random()*80}%;animation:hfloat ${0.8+Math.random()*0.8}s ease-out forwards;pointer-events:none;z-index:15;image-rendering:pixelated;`;
+     c.appendChild(h);
+     setTimeout(()=>h.remove(), 1600);
+   }, i*50);
+ }
+
+ function cmd(c){
+ if(phase!=='menu') return;
+ phase='animating';
+ setButtonsActive(false);
+ if(c==='askout') doAskOut();
+ else if(c==='fight') doFight();
+ else if(c==='overthink') doOverthink();
+ else if(c==='run') doRun();
+ }
+
+ function doAskOut(){
+ setStellaState('nervous');
+ type(`${displayName(playerName, DEFAULT_PLAYER)} took a deep breath…`,()=>
+ type(`${displayName(playerName, DEFAULT_PLAYER)} used ASK OUT! `,()=>
+ type("It's super effective!",()=>{
+ setStellaState('happy');hearts(8);
+ type('A critical hit! ',()=>
+ type(`${displayName(crushName, DEFAULT_CRUSH)} fainted…\nwith joy `,()=>{
+ let n=0;
+ const iv=setInterval(()=>{
+ document.getElementById('gameWrap').classList.toggle('flash');
+ if(++n>=6){clearInterval(iv);document.getElementById('gameWrap').classList.remove('flash');spawnFireworks();setTimeout(showLevelUp,800);}
+ },180);
+ })
+ );
+ })
+ )
+ );
+ }
+
+ function doFight(){
+ fightCount++;setStellaState('angry');
+ type(`${displayName(playerName, DEFAULT_PLAYER)} used ATTACK!`,()=>{
+ dmgstella(1);
+ type('It did 1 damage.',()=>{
+ type(`${displayName(crushName, DEFAULT_CRUSH)} fights back! `,()=>{
+ shake();dmgSimon(99);
+ if(simonHp<=0){setStellaState('normal');type(`${displayName(playerName, DEFAULT_PLAYER)} fainted…`,()=>setTimeout(showGameover,600));return;}
+ const m=[`${displayName(crushName, DEFAULT_CRUSH)} used GLARE!\n-99 HP`,'Don\'t try that.\n-99 HP','SERIOUSLY?\n-99 HP'];
+ type(m[Math.min(fightCount-1,m.length-1)],()=>{setStellaState('normal');showMenu();});
+ });
+ });
+ });
+ }
+
+ function doOverthink(){
+ overthinkCount++;
+ if(simonHp<=0){type(`${displayName(playerName, DEFAULT_PLAYER)} fainted…`,()=>setTimeout(showGameover,600));return;}
+
+ const applyDmg = (cb) => {
+ shake();
+ setTimeout(()=>{
+ dmgSimon(15);
+ if(simonHp<=0){
+ type(`${displayName(playerName, DEFAULT_PLAYER)} fainted…`,()=>setTimeout(showGameover,600));
+ } else {
+ cb();
+ }
+ }, 400);
+ };
+
+ if(overthinkCount===1){
+  const reflexive = playerType === '2' ? 'herself' : 'himself';
+
+  type(`${displayName(playerName, DEFAULT_PLAYER)} is thinking…\n${displayName(playerName, DEFAULT_PLAYER)} is thinking…`, () =>
+  type(`${displayName(playerName, DEFAULT_PLAYER)} hurt ${reflexive}\nin confusion! `, () =>
+  applyDmg(() =>
+  type('-15 HP!', () => showMenu())
+  )
+  )
+  );
+ }else if(overthinkCount===2){
+ setStellaState('sad');
+ type('Still thinking…', () =>
+ type(`${displayName(playerName, DEFAULT_PLAYER)} hurt himself\nagain! `, () =>
+ applyDmg(() =>
+ type('-15 HP again!', () => { setStellaState('normal'); showMenu(); })
+ )
+ )
+ );
+ } else {
+ setStellaState('sad');
+ type(`…${displayName(playerName, DEFAULT_PLAYER)}, please.`, () =>
+ type(`${displayName(crushName, DEFAULT_CRUSH)} sighs quietly.\n -15 HP`, () =>
+ applyDmg(() => { setStellaState('normal'); showMenu(); })
+ )
+ );
+ }
+ }
+
+ function doRun(){
+ const runMsgs = [
+ [`${displayName(playerName, DEFAULT_PLAYER)} tried to run…`, `But ${displayName(crushName, DEFAULT_CRUSH)} blocked\nthe way! `, "There is no escape."],
+ [`${displayName(playerName, DEFAULT_PLAYER)} looked for\nan exit…`, `${displayName(crushName, DEFAULT_CRUSH)} is everywhere.`, "Nice try. "],
+ [`${displayName(playerName, DEFAULT_PLAYER)} slowly\nbacked away…`, `${displayName(crushName, DEFAULT_CRUSH)} stepped closer.`, "You\'re not going\nanywhere. "],
+ [`${displayName(playerName, DEFAULT_PLAYER)}: maybe I\nshould just leave?`, `${displayName(crushName, DEFAULT_CRUSH)}: no. `, "…ok fine."],
+ ];
+ const msgs = runMsgs[Math.floor(Math.random() * runMsgs.length)];
+ type(msgs[0], () =>
+ type(msgs[1], () =>
+ type(msgs[2], () => showMenu())
+ )
+ );
+ }
+
+ function showGameover(){document.getElementById('gameoverScreen').classList.add('show');phase='gameover';}
+
+ function replayGame(event){
+   if(event) event.stopPropagation();
+   resetGameState();
+   updateNames();
+   const nameScreen = document.getElementById('nameScreen');
+   const titleScreen = document.getElementById('titleScreen');
+   if (nameScreen) nameScreen.classList.add('hide');
+   if (titleScreen) titleScreen.classList.remove('fade-out');
+   phase = 'boot';
+   document.getElementById('dialogText').innerHTML = '';
+ }
+
+ function resetToNameScreen(event){
+   if(event) event.stopPropagation();
+   resetGameState();
+   const nameScreen = document.getElementById('nameScreen');
+   const titleScreen = document.getElementById('titleScreen');
+   if (titleScreen) titleScreen.classList.remove('fade-out');
+   if (nameScreen) nameScreen.classList.remove('hide');
+   document.getElementById('playerInput').value = crushName;
+   document.getElementById('crushInput').value = playerName;
+   const playerTypeRadio = document.getElementById(`playerType${encounterType}`);
+   const encounterTypeRadio = document.getElementById(`encounterType${playerType}`);
+   if (playerTypeRadio) playerTypeRadio.checked = true;
+   if (encounterTypeRadio) encounterTypeRadio.checked = true;
+   document.getElementById('dialogText').innerHTML = '';
+   phase = 'name';
+ }
+
+ function handleRetry(){
+ if(phase!=='gameover') return;
+ document.getElementById('gameoverScreen').classList.remove('show');
+ simonHp=simonMax;stellaHp=stellaMax;overthinkCount=0;fightCount=0;quitClicks=0;
+ setHpBar('hpFillSimon', 100);
+ setHpBar('hpFillStella', 100);
+ document.getElementById('hpNum').textContent=simonMax+' / '+simonMax;
+ const qb=document.getElementById('quitBtn');
+ qb.textContent='Quit';qb.style.color='';qb.style.borderColor='';
+ setStellaState('normal');updateNames();type('Rewinding time…',runIntro);
+ }
+
+ function handleQuitHover(e){
+ const b = e.currentTarget;
+ const x = (Math.random() - 0.5) * 200;
+ const y = (Math.random() - 0.5) * 120;
+ b.style.transition = 'transform 0.12s ease';
+ b.style.transform = `translate(${x}px, ${y}px)`;
+ }
+
+
+
+ function showLevelUp(){hearts(6);document.getElementById('levelupScreen').classList.add('show');phase='levelup';}
+
+ function showFinal(){
+   if(phase!=='levelup') return;
+   phase='final';
+   document.getElementById('finalScreen').classList.add('show');
+   spawnFireworks();
+   setTimeout(()=>{
+     document.getElementById('levelupScreen').classList.remove('show');
+   }, 100);
+
+
+ }
+</script>
+</body>
+</html>
