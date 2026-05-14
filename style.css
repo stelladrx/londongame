@@ -328,15 +328,15 @@ body {
  );
 }
 
-#btnAskOut { background: #E8788A; box-shadow: inset -3px -3px 0 #A03848, inset 3px 3px 0 #FFAAB8; }
+#btnReserver { background: #E8788A; box-shadow: inset -3px -3px 0 #A03848, inset 3px 3px 0 #FFAAB8; }
 #btnFight { background: #C87830; box-shadow: inset -3px -3px 0 #804810, inset 3px 3px 0 #F0A850; }
-#btnOverthink { background: #489838; box-shadow: inset -3px -3px 0 #206018, inset 3px 3px 0 #70C050; }
-#btnRun { background: #3868C0; box-shadow: inset -3px -3px 0 #183890, inset 3px 3px 0 #6090E8; }
+#btnReflechir { background: #489838; box-shadow: inset -3px -3px 0 #206018, inset 3px 3px 0 #70C050; }
+#btnFuir { background: #3868C0; box-shadow: inset -3px -3px 0 #183890, inset 3px 3px 0 #6090E8; }
 
-#btnAskOut:hover { background: #F08898; }
+#btnReserver:hover { background: #F08898; }
 #btnFight:hover { background: #D88840; }
-#btnOverthink:hover { background: #58A848; }
-#btnRun:hover { background: #4878D0; }
+#btnReflechir:hover { background: #58A848; }
+#btnFuir:hover { background: #4878D0; }
 
 .menu-btn:active { transform: translateY(2px); filter: brightness(0.9); }
 .menu-btn.cursor-on { filter: brightness(1.15); transform: translateY(-1px); }

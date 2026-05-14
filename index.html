@@ -378,7 +378,7 @@
    simonHp = Math.max(0, simonHp - n);
    setHpBar('hpFillSimon', simonHp / simonMax * 100);
    document.getElementById('hpNum').textContent = simonHp + ' / ' + simonMax;
-   const g = document.getElementById('charsimon');
+   const g = document.getElementById('charSimon');
    g.classList.add('simon-hit'); setTimeout(()=>g.classList.remove('simon-hit'), 380);
  }
 
