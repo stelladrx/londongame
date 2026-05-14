@@ -566,7 +566,7 @@
  const norm = Math.sqrt(dx*dx + dy*dy) || 1;
  const x = -(dx / norm) * dist + (Math.random() - 0.5) * 60;
  const y = -(dy / norm) * dist + (Math.random() - 0.5) * 40;
- b.style.transition = 'none';
+ b.style.transition = 'transform 0.06s ease-out';
  b.style.transform = `translate(${x}px, ${y}px)`;
  }
 
