@@ -560,12 +560,19 @@
  function handleQuitHover(e){
  const b = e.currentTarget;
  const rect = b.getBoundingClientRect();
+ const container = document.getElementById('gameoverScreen').getBoundingClientRect();
  const dx = e.clientX - (rect.left + rect.width / 2);
  const dy = e.clientY - (rect.top + rect.height / 2);
- const dist = 180 + Math.random() * 80;
+ const dist = 160 + Math.random() * 60;
  const norm = Math.sqrt(dx*dx + dy*dy) || 1;
- const x = -(dx / norm) * dist + (Math.random() - 0.5) * 60;
- const y = -(dy / norm) * dist + (Math.random() - 0.5) * 40;
+ let x = -(dx / norm) * dist + (Math.random() - 0.5) * 40;
+ let y = -(dy / norm) * dist + (Math.random() - 0.5) * 30;
+ const maxLeft = rect.left - container.left - 4;
+ const maxRight = container.right - rect.right - 4;
+ const maxUp = rect.top - container.top - 4;
+ const maxDown = container.bottom - rect.bottom - 4;
+ x = Math.max(-maxLeft, Math.min(maxRight, x));
+ y = Math.max(-maxUp, Math.min(maxDown, y));
  b.style.transition = 'transform 0.06s ease-out';
  b.style.transform = `translate(${x}px, ${y}px)`;
  }
