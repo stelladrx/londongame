@@ -667,6 +667,44 @@ body {
   background: rgba(255,197,103,0.15);
 }
 
+.final-unlock-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  width: 100%;
+}
+.final-dest-name {
+  font-family: 'VT323', monospace;
+  font-size: 28px;
+  color: #FFC567;
+  letter-spacing: 5px;
+  text-shadow: 0 0 10px rgba(255,197,103,0.5);
+}
+.final-unlock-btn {
+  display: inline-block;
+  background: #552CB7;
+  border: 2px solid #FFC567;
+  border-radius: 4px;
+  padding: 6px 28px;
+  font-family: 'VT323', monospace;
+  font-size: 24px;
+  color: #FFC567;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 2px;
+  text-decoration: none;
+  box-shadow: 3px 3px 0 #000, 0 0 14px rgba(85,44,183,0.6);
+}
+.final-unlock-btn:hover {
+  filter: brightness(1.15);
+}
+.final-unlock-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000;
+}
+
 @media (max-width: 680px) {
   body {
     padding: 0;
