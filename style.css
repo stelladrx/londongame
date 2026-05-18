@@ -352,7 +352,7 @@ body {
 ══════════════════════ */
 /* Full overlay - covers entire game including bottom bar */
 .full-overlay {
- position: absolute;
+ position: fixed;
  inset: 0;
  display: none;
  flex-direction: column;
@@ -377,12 +377,12 @@ body {
 }
 .overlay.show { opacity:1; pointer-events:all; }
 
-#levelupScreen { background: var(--ink); cursor: pointer; padding: 12px; gap: 7px; }
+#levelupScreen { background: var(--ink); cursor: pointer; }
 #gameoverScreen { background: var(--ink); }
 #finalScreen { background: var(--ink); }
 .lu-fanfare { font-family:'VT323',monospace; font-size:22px; color:#888; letter-spacing:6px; }
 @keyframes fanfare { from{transform:scale(0.9)} to{transform:scale(1.1)} }
-.lu-title { font-family:'VT323',monospace; font-size:48px; color:white; text-align:center; line-height:1.1; letter-spacing:3px; }
+.lu-title { font-family:'VT323',monospace; font-size:48px; color:white; text-align:center; line-height:1.2; letter-spacing:3px; }
 @keyframes lu-flash { 0%,100%{color:#FFC567} 50%{color:white} }
 .lu-stats { background:#111; border:2px solid #FFC567; border-radius:4px; padding:10px 14px; width:100%; }
 .lu-row { display:flex; justify-content:space-between; font-family:'VT323',monospace; font-size:24px; color:white; margin-bottom:4px; line-height:1.4; }
