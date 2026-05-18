@@ -377,25 +377,25 @@ body {
 }
 .overlay.show { opacity:1; pointer-events:all; }
 
-#levelupScreen { background: var(--ink); cursor: pointer; padding: 10px; gap: 6px; }
+#levelupScreen { background: var(--ink); cursor: pointer; padding: 8px; gap: 4px; }
 #gameoverScreen { background: var(--ink); }
 #finalScreen { background: var(--ink); }
-.lu-fanfare { font-family:'VT323',monospace; font-size:22px; color:#888; letter-spacing:6px; }
+.lu-fanfare { font-family:'VT323',monospace; font-size:18px; color:#888; letter-spacing:6px; }
 @keyframes fanfare { from{transform:scale(0.9)} to{transform:scale(1.1)} }
-.lu-title { font-family:'VT323',monospace; font-size:48px; color:white; text-align:center; line-height:1.2; letter-spacing:3px; }
+.lu-title { font-family:'VT323',monospace; font-size:36px; color:white; text-align:center; line-height:1.2; letter-spacing:3px; }
 @keyframes lu-flash { 0%,100%{color:#FFC567} 50%{color:white} }
-.lu-stats { background:#111; border:2px solid #FFC567; border-radius:4px; padding:10px 14px; width:100%; }
-.lu-row { display:flex; justify-content:space-between; font-family:'VT323',monospace; font-size:24px; color:white; margin-bottom:4px; line-height:1.4; }
-.lu-new { font-family:'VT323',monospace; font-size:24px; color:#FFC567; text-shadow:0 0 6px #FFC567; animation:stat-in 0.4s ease-out both; }
+.lu-stats { background:#111; border:2px solid #FFC567; border-radius:4px; padding:7px 12px; width:100%; }
+.lu-row { display:flex; justify-content:space-between; font-family:'VT323',monospace; font-size:20px; color:white; margin-bottom:2px; line-height:1.4; }
+.lu-new { font-family:'VT323',monospace; font-size:20px; color:#FFC567; text-shadow:0 0 6px #FFC567; animation:stat-in 0.4s ease-out both; }
 .lu-row:nth-child(1) .lu-new { animation-delay:0.1s; }
 .lu-row:nth-child(2) .lu-new { animation-delay:0.3s; }
 .lu-row:nth-child(3) .lu-new { animation-delay:0.5s; }
 @keyframes stat-in { from{opacity:0;transform:translateX(8px)} to{opacity:1;transform:none} }
-.lu-skill { background:#552CB7; border:2px solid #FFC567; border-radius:4px; padding:10px 14px; width:100%; text-align:center; box-shadow:0 0 20px rgba(85,44,183,0.6); }
-.lu-skill-label { font-family:'VT323',monospace; font-size:20px; color:rgba(255,255,255,0.8); letter-spacing:2px; margin-bottom:6px; }
-.lu-skill-name { font-family:'VT323',monospace; font-size:36px; color:#FFC567; letter-spacing:6px; }
+.lu-skill { background:#552CB7; border:2px solid #FFC567; border-radius:4px; padding:7px 12px; width:100%; text-align:center; box-shadow:0 0 20px rgba(85,44,183,0.6); }
+.lu-skill-label { font-family:'VT323',monospace; font-size:17px; color:rgba(255,255,255,0.8); letter-spacing:2px; margin-bottom:3px; }
+.lu-skill-name { font-family:'VT323',monospace; font-size:28px; color:#FFC567; letter-spacing:6px; }
 @keyframes glow { 0%,100%{text-shadow:0 0 8px #FFC567} 50%{text-shadow:0 0 24px #FFC567,0 0 48px #FB7DA8} }
-.lu-tap { font-family:'VT323',monospace; font-size:20px; color:#888; animation:blink 1s step-end infinite; }
+.lu-tap { font-family:'VT323',monospace; font-size:17px; color:#888; animation:blink 1s step-end infinite; }
 
 #gameoverScreen { background:var(--ink); }
 .go-title { font-family:'VT323',monospace; font-size:72px; color:#FFC567; text-align:center; line-height:1; animation:flicker 3s ease-in-out infinite; letter-spacing:4px; }
@@ -672,9 +672,9 @@ body {
   background: #552CB7;
   border: 2px solid #FFC567;
   border-radius: 4px;
-  padding: 6px 28px;
+  padding: 4px 22px;
   font-family: 'VT323', monospace;
-  font-size: 24px;
+  font-size: 20px;
   color: #FFC567;
   cursor: pointer;
   text-align: center;
