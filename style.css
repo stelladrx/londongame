@@ -377,7 +377,7 @@ body {
 }
 .overlay.show { opacity:1; pointer-events:all; }
 
-#levelupScreen { background: var(--ink); cursor: pointer; }
+#levelupScreen { background: var(--ink); cursor: pointer; padding: 10px; gap: 6px; }
 #gameoverScreen { background: var(--ink); }
 #finalScreen { background: var(--ink); }
 .lu-fanfare { font-family:'VT323',monospace; font-size:22px; color:#888; letter-spacing:6px; }
